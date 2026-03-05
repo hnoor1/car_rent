@@ -46,8 +46,16 @@
     <div class="row row-cols-1 row-cols-md-4 g-4">
 <!-- üks auto  -->
 <?php
-    $paring = "SELECT * FROM cars LIMIT 8";                 //valmistan ette päringu stringina
+    $paring = "SELECT * FROM cars";                 //valmistan ette päringu stringina 
+    if (!empty($_GET["otsi"])) {
+        $otsing = $_GET["otsi"];
+        $paring .= " WHERE mark LIKE '%".$otsing."%'";
+    } 
+
+    $paring .= " LIMIT 8";
+
     //var_dump($_GET["otsi"]);
+
     $valjund = mysqli_query($yhendus, $paring);     //saadan päringu andmebaasi
     while($rida = mysqli_fetch_assoc($valjund)){    //sikutan vastuse alla, while tsükliga kuvab kaartidesse autosid koos andmetega
         // var_dump($rida);                            // //kuvan testvastuse
@@ -65,7 +73,7 @@
             Kütus: <?php echo $rida ["fuel"]; ?> <br>
             Hind: <?php echo $rida ["price"]; ?> €/päev <br>
         </p>
-        <a href="#" class="btn btn-primary w-100">Rendi</a>
+        <a href="single_car.php?id=<?php echo $rida["id"]; ?>" class="btn btn-primary w-100">Rendi</a>
         </div>
         </div>
   </div>
